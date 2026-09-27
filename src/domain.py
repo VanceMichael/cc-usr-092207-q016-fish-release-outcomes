@@ -9,6 +9,12 @@ def load_domain(path: Path) -> dict:
     required = {"domain", "version", "sample_id", "actors", "facts", "constraints"}
     if not required.issubset(value):
         raise ValueError("共享资料缺少必要字段")
-    if value["version"] < 1 or len(value["actors"]) < 2 or len(value["facts"]) < 2 or len(value["constraints"]) < 2:
+    if (
+        value["domain"] != "fish-release-outcomes"
+        or value["version"] < 2
+        or len(value["actors"]) < 4
+        or len(value["facts"]) < 3
+        or len(value["constraints"]) < 10
+    ):
         raise ValueError("共享资料内容不完整")
     return value

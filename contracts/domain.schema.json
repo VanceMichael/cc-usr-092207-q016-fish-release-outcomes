@@ -12,8 +12,7 @@
   ],
   "properties": {
     "domain": {
-      "type": "string",
-      "minLength": 1
+      "const": "fish-release-outcomes"
     },
     "version": {
       "type": "integer",
@@ -32,14 +31,15 @@
     },
     "facts": {
       "type": "array",
-      "minItems": 2,
+      "minItems": 3,
       "items": {
-        "type": "string"
+        "type": "string",
+        "minLength": 1
       }
     },
     "constraints": {
       "type": "array",
-      "minItems": 2,
+      "minItems": 10,
       "items": {
         "type": "string"
       }
