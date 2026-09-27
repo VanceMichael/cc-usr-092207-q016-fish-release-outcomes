@@ -1,12 +1,39 @@
 {
   "domain": "fish-release-outcomes",
-  "version": 1,
+  "version": 2,
   "sample_id": "record-016",
+  "program": {
+    "species": "长江鲟",
+    "cumulative_released": 7360000,
+    "cumulative_unit": "尾",
+    "note": "多年累计放流规模只是投入量，不等于种群恢复"
+  },
   "actors": [
-    "鱼类保育中心",
-    "放流执行单位",
-    "第三方生态监测人员",
-    "流域保护决策人员"
+    {
+      "id": "A01",
+      "name": "鱼类保育中心",
+      "responsibilities": ["broodstock", "breeding_quarantine", "tagging", "hatchery_evidence"]
+    },
+    {
+      "id": "A02",
+      "name": "放流执行单位",
+      "responsibilities": ["transport", "on_site_count", "release_execution"]
+    },
+    {
+      "id": "A03",
+      "name": "第三方生态监测人员",
+      "responsibilities": ["field_sampling", "resighting", "independent_evidence"]
+    },
+    {
+      "id": "A04",
+      "name": "流域保护决策人员",
+      "responsibilities": ["annual_decision"]
+    },
+    {
+      "id": "A05",
+      "name": "科研分析人员",
+      "responsibilities": ["origin_assignment", "survival_dispersal_analysis", "recomputation"]
+    }
   ],
   "facts": [
     "四川建有长江鲟保育中心并保存大量野生原种",
@@ -18,5 +45,262 @@
     "放流运输计数",
     "野外监测匹配",
     "生态成效评估"
+  ],
+  "reaches": [
+    {"id": "R1", "name": "金沙江上游-嘎莫寺江段"},
+    {"id": "R2", "name": "金沙江上游-叶巴滩江段"},
+    {"id": "R3", "name": "金沙江上游-奔达江段"}
+  ],
+  "custody_chain": [
+    {"stage": "broodstock", "actor": "A01", "description": "野生原种与保种亲本逐尾建档"},
+    {"stage": "breeding_quarantine", "actor": "A01", "description": "繁育配对、检疫与苗种批次建立"},
+    {"stage": "tagging", "actor": "A01", "description": "遗传采样与可视标记绑定批次"},
+    {"stage": "transport", "actor": "A02", "description": "运输容器封签与容器级计数"},
+    {"stage": "on_site_count", "actor": "A02", "description": "放流现场双方计数与死亡剔除"},
+    {"stage": "release", "actor": "A02", "description": "按批次投放到指定河段"},
+    {"stage": "post_release_sampling", "actor": "A03", "description": "河段水文记录与后续独立采样"}
+  ],
+  "broodstock": [
+    {"id": "BS-001", "species": "长江鲟", "source": "野生原种", "genetic_sample_id": "G-BS001"},
+    {"id": "BS-002", "species": "长江鲟", "source": "野生原种", "genetic_sample_id": "G-BS002"}
+  ],
+  "batches": [
+    {
+      "id": "B2025-01",
+      "species": "长江鲟",
+      "spawn_date": "2025-03-18",
+      "parent_ids": ["BS-001", "BS-002"],
+      "quarantine_passed": true,
+      "genetic_reference": "G-B2025-01",
+      "tag_methods": [
+        {"method": "genetic_parentage", "coverage": 1.0},
+        {"method": "visible_implant_tag", "coverage": 0.3, "expected_shed_rate": 0.05}
+      ]
+    }
+  ],
+  "transport_containers": [
+    {"id": "C-7", "batch_id": "B2025-01", "seal_id": "S-7731", "loaded_count": 120000, "doa_on_arrival": 310}
+  ],
+  "releases": [
+    {
+      "id": "REL-2025-04",
+      "batch_id": "B2025-01",
+      "container_ids": ["C-7"],
+      "reach_id": "R2",
+      "date": "2025-05-09",
+      "declared_count": 120000,
+      "hydrology": {
+        "discharge_m3s": 920,
+        "water_temp_c": 13.6,
+        "turbidity_ntu": 180,
+        "source_observation_ids": ["OBS-H-2025-0509"]
+      }
+    }
+  ],
+  "observations": [
+    {
+      "id": "OBS-H-2025-0509",
+      "type": "hydrology",
+      "actor": "A03",
+      "observed_at": "2025-05-09T08:30:00+08:00",
+      "reach_id": "R2",
+      "payload": {"discharge_m3s": 920, "water_temp_c": 13.6, "turbidity_ntu": 180},
+      "immutable": true,
+      "recorded_at": "2025-05-09T09:05:00+08:00"
+    },
+    {
+      "id": "OBS-C-2025-0509",
+      "type": "on_site_count",
+      "actor": "A02",
+      "observed_at": "2025-05-09T07:50:00+08:00",
+      "reach_id": "R2",
+      "payload": {"container_id": "C-7", "released_alive": 119690, "dead_at_site": 0, "count_method": "双方抽样复核"},
+      "immutable": true,
+      "recorded_at": "2025-05-09T08:10:00+08:00"
+    },
+    {
+      "id": "OBS-C-2025-0509-C1",
+      "type": "count_correction",
+      "actor": "A02",
+      "observed_at": "2025-05-10T14:00:00+08:00",
+      "payload": {"revised_released_alive": 119602, "reason": "复抽发现两框计数偏差"},
+      "immutable": true,
+      "corrects": "OBS-C-2025-0509",
+      "recorded_at": "2025-05-10T14:20:00+08:00"
+    },
+    {
+      "id": "OBS-D-2025-0511",
+      "type": "abnormal_mortality",
+      "actor": "A03",
+      "observed_at": "2025-05-11T10:00:00+08:00",
+      "reach_id": "R2",
+      "payload": {"dead_found": 47, "distance_km_from_release": 0.8, "suspected_cause": "放流后短期应激"},
+      "immutable": true,
+      "recorded_at": "2025-05-11T11:00:00+08:00"
+    },
+    {
+      "id": "OBS-S-2025-09-01",
+      "type": "capture",
+      "actor": "A03",
+      "observed_at": "2025-09-01T09:40:00+08:00",
+      "reach_id": "R3",
+      "payload": {"individual_id": "F-9001", "total_length_mm": 412, "tag_visible": true, "tag_id": "VIT-55210", "genetic_sample_id": "G-F9001"},
+      "immutable": true,
+      "recorded_at": "2025-09-01T10:02:00+08:00"
+    },
+    {
+      "id": "OBS-S-2025-09-01-R1",
+      "type": "recapture",
+      "actor": "A03",
+      "observed_at": "2025-09-20T15:10:00+08:00",
+      "reach_id": "R3",
+      "payload": {"individual_id": "F-9001", "tag_id": "VIT-55210", "genetic_sample_id": "G-F9001", "note": "同一尾，按重捕处理不重复计数"},
+      "immutable": true,
+      "recorded_at": "2025-09-20T15:40:00+08:00"
+    },
+    {
+      "id": "OBS-S-2025-09-02",
+      "type": "capture",
+      "actor": "A03",
+      "observed_at": "2025-09-02T08:15:00+08:00",
+      "reach_id": "R1",
+      "payload": {"individual_id": "F-9002", "total_length_mm": 388, "tag_visible": false, "genetic_sample_id": "G-F9002"},
+      "immutable": true,
+      "recorded_at": "2025-09-02T09:00:00+08:00"
+    },
+    {
+      "id": "OBS-NS-EGG-01",
+      "type": "field_finding",
+      "actor": "A03",
+      "observed_at": "2025-04-02T07:30:00+08:00",
+      "reach_id": "R1",
+      "payload": {"finding": "粘附性卵3粒", "genetic_sample_id": "G-EGG-01", "species_match": "长江鲟"},
+      "immutable": true,
+      "recorded_at": "2025-04-02T09:10:00+08:00"
+    },
+    {
+      "id": "OBS-NS-JUV-01",
+      "type": "field_finding",
+      "actor": "A03",
+      "observed_at": "2025-07-18T10:20:00+08:00",
+      "reach_id": "R1",
+      "payload": {"finding": "幼鱼2尾", "total_length_mm": [96, 104], "genetic_sample_id": "G-JUV-01", "parentage_match_against_hatchery": "无匹配"},
+      "immutable": true,
+      "recorded_at": "2025-07-18T11:40:00+08:00"
+    },
+    {
+      "id": "OBS-S-2025-10-MIX",
+      "type": "mixed_sample",
+      "actor": "A03",
+      "observed_at": "2025-10-12T11:00:00+08:00",
+      "reach_id": "R1",
+      "payload": {
+        "sample_id": "eDNA-MIX-11",
+        "matrix": "水体eDNA",
+        "detected_species": "长江鲟",
+        "note": "混合样本无法逐尾指认，输出群体级概率"
+      },
+      "immutable": true,
+      "recorded_at": "2025-10-12T12:30:00+08:00"
+    }
+  ],
+  "origin_assignments": [
+    {
+      "id": "OA-9001",
+      "observation_id": "OBS-S-2025-09-01",
+      "individual_id": "F-9001",
+      "method": "遗传亲本比对+可视标记互证",
+      "assignment": "hatchery",
+      "batch_id": "B2025-01",
+      "confidence": 0.99,
+      "analyst": "A05",
+      "analysis_id": "AN-2025-01"
+    },
+    {
+      "id": "OA-9002",
+      "observation_id": "OBS-S-2025-09-02",
+      "individual_id": "F-9002",
+      "method": "遗传亲本比对（标记疑似脱落，无实体标佐证）",
+      "assignment": "hatchery",
+      "batch_id": "B2025-01",
+      "confidence": 0.93,
+      "tag_loss_assumed": true,
+      "analyst": "A05",
+      "analysis_id": "AN-2025-01"
+    },
+    {
+      "id": "OA-MIX-11",
+      "observation_id": "OBS-S-2025-10-MIX",
+      "method": "混合样本等位基因频率分析",
+      "assignment": "undifferentiated",
+      "posterior_hatchery": 0.62,
+      "credible_interval": [0.41, 0.80],
+      "confidence": 0.62,
+      "analyst": "A05",
+      "analysis_id": "AN-2025-02"
+    }
+  ],
+  "analyses": [
+    {
+      "id": "AN-2025-01",
+      "analysis_version": 1,
+      "status": "superseded",
+      "monitoring_protocol_version": "MP-v3.1",
+      "input_observation_ids": ["OBS-C-2025-0509", "OBS-D-2025-0511", "OBS-S-2025-09-01", "OBS-S-2025-09-02"],
+      "adjustments": [
+        {"type": "tag_shed", "detail": "按5%预期脱落率校正可见标检出"},
+        {"type": "recapture_dedup", "detail": "重捕个体只计一次"},
+        {"type": "abnormal_mortality", "detail": "47尾异常死亡计入放流后早期死亡"}
+      ],
+      "produced_by": "A05",
+      "note": "初版使用现场初计数，未含后续计数纠正；v3.1方案尚未纳入eDNA混合样本"
+    },
+    {
+      "id": "AN-2025-02",
+      "analysis_version": 2,
+      "status": "current",
+      "monitoring_protocol_version": "MP-v3.2",
+      "supersedes": "AN-2025-01",
+      "protocol_change_reason": "监测方案v3.2将eDNA混合样本纳入群体级证据",
+      "input_observation_ids": ["OBS-C-2025-0509", "OBS-C-2025-0509-C1", "OBS-D-2025-0511", "OBS-S-2025-09-01", "OBS-S-2025-09-01-R1", "OBS-S-2025-09-02", "OBS-S-2025-10-MIX"],
+      "adjustments": [
+        {"type": "count_correction", "detail": "采用纠正后现场存活计数119602尾"},
+        {"type": "tag_shed", "detail": "按5%预期脱落率校正可见标检出"},
+        {"type": "recapture_dedup", "detail": "F-9001 两次遭遇去重为1尾"},
+        {"type": "abnormal_mortality", "detail": "47尾异常死亡计入放流后早期死亡"},
+        {"type": "mixed_sample_probabilistic", "detail": "eDNA仅提供群体级后验，不计入逐尾存活数"}
+      ],
+      "metrics": [
+        {"id": "M-survival", "name": "放流后当年表观存活率", "formula": "确认存活去重尾数/纠正后放流存活数", "inputs": ["OBS-S-2025-09-01", "OBS-S-2025-09-02", "OBS-C-2025-0509-C1"], "value": null, "recomputable": true},
+        {"id": "M-dispersal", "name": "扩散距离分布", "formula": "再发现位点距R2放流点河网距离", "inputs": ["OBS-S-2025-09-01", "OBS-S-2025-09-02"], "value": {"min_km": 12, "max_km": 38}, "recomputable": true}
+      ],
+      "produced_by": "A05"
+    }
+  ],
+  "natural_spawning_evidence": {
+    "signals": [
+      {"id": "NS-1", "signal": "上游产卵场采集到长江鲟卵", "observation_ids": ["OBS-NS-EGG-01"], "strength": "候选信号"},
+      {"id": "NS-2", "signal": "幼鱼批次与全部人工批次遗传不匹配", "observation_ids": ["OBS-NS-JUV-01"], "strength": "候选信号"}
+    ],
+    "evidence_boundary": {
+      "requires": ["卵/幼鱼遗传排除全部放流批次", "同一产卵场跨日重复出现早期发育个体", "排除养殖逃逸与他源移入"],
+      "excludes": ["仅有eDNA检出不能判定自然产卵", "带标记亲鱼所产卵不计为无干预自然繁殖证据"],
+      "threshold_confidence": 0.95,
+      "status": "未确证：候选信号尚在补证，不得据此宣称自然繁殖已建立"
+    }
+  },
+  "decisions": [
+    {
+      "id": "DEC-2026",
+      "year": 2026,
+      "based_on_analysis": "AN-2025-02",
+      "adjustments": [
+        {"dimension": "species", "change": "维持长江鲟，新增川陕哲罗鲑试验批次"},
+        {"dimension": "quantity", "change": "B2025-01批次规模下调15%，提升规格与检疫时长"},
+        {"dimension": "reach", "change": "R3扩散回报最高，新增R3放流点；R1仅保留监测"}
+      ],
+      "natural_spawning_declaration": "不宣布自然繁殖建立，继续按证据边界补证",
+      "decided_by": "A04"
+    }
   ]
 }
